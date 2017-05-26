@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/common.css">
+</head>
+<body>
+<div id="main" style="width: 1300px;height:400px;"></div>
+<script src="js/jquery.js"></script>
+<script src="js/appData.js"></script>
+<script src="js/echarts.common.min.js"></script>
+<script>
+    appData.length = 12;
+
+    var AppNameArr = [];
+    var UseNumArr = [];
+    var zengFuArr = [];
+    var colors = ['pink', '#e4e4e4'];
+
+    for (var i in appData) {
+        AppNameArr.push(appData[i].AppName);
+        UseNumArr.push(appData[i].UseNum);
+        zengFuArr.push(appData[i].Growth);
+    }
+
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        color: colors,
+
+        title: {
+            text: '2017年4月APP月度独立设备数',
+            left: 'center',
+            textStyle: {
+                fontSize: 12,
+                fontWeight: 'bolder',
+                color: '#000'
+            }
+        },
+        tooltip: {},
+        legend: {
+            data: ['设备数', '环比增幅'],
+            x: 'right',
+            padding: [5, 130, 0, 0]
+        },
+        xAxis: {
+            data: AppNameArr
+        },
+        yAxis: [
+            {
+                type: 'value',
+                name: '设备数',
+                axisLine: {
+                    lineStyle: {
+                        color: 'pink'
+                    }
+                }
+            },
+            {
+                type: 'value',
+                name: '环比增幅',
+                axisLine: {
+                    lineStyle: {
+                        color: '#e2e8bf'
+                    }
+                }
+            }
+        ],
+        series: [
+            {
+                name: '设备数',
+                type: 'bar',
+                data: UseNumArr,
+                itemStyle: {
+                    //柱形图圆角，鼠标移上去效果，如果只是一个数字则说明四个参数全部设置为那么多
+                    emphasis: {
+                        barBorderRadius: 30
+                    },
+
+                    normal: {
+                        //柱形图圆角，初始化效果
+                        barBorderRadius:[10, 10, 0, 0],
+
+                        }
+                    }
+            },
+            {
+                name: '环比增幅',
+                type: 'line',
+                yAxisIndex: 1,
+                data: zengFuArr,
+                smooth: true
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</body>
+</html>
